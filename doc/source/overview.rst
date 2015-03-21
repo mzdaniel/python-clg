@@ -77,7 +77,7 @@ With YAML
         foo:
             short: f
             help: Foo help.
-        bar
+        bar:
             short: b
             help: Bar help.
 
