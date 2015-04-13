@@ -332,7 +332,7 @@ class Namespace(argparse.Namespace):
 class CommandLine(object):
     """CommandLine object that parse a preformatted dictionnary and generate
     ``argparse`` parser."""
-    def __init__(self, config, keyword='command'):
+    def __init__(self, config, keyword='command', types={}):
         """Initialize the command from **config** which is a dictionnary
         (preferably an OrderedDict). **keyword** is the name use for knowing the
         path of subcommands (ie: 'command0', 'command1', ... in the namespace of
@@ -359,6 +359,8 @@ class CommandLine(object):
             self.config['subparsers'] = subparsers_conf
 
         self.keyword = keyword
+        self.types = dict(types)
+        self.types.update(TYPES)
         self._parsers = OrderedDict()
         self.parser = None
         self._add_parser([])
@@ -518,7 +520,7 @@ class CommandLine(object):
                 continue
 
             arg_kwargs[param] = {
-                'type': lambda: TYPES[value],
+                'type': lambda: self.types[value],
                 'help': lambda: value.replace('__DEFAULT__', default)
                                      .replace('__CHOICES__', choices)
                                      .replace('__MATCH__', match)
